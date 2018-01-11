@@ -1,0 +1,9 @@
+For this assignment, the main function starts with an empty array the size of 8.  
+Each index in the array signifies the column of the board, and the value in the 
+array is the row a queen is in that row.  This uses a recursion method, finding 
+a position for a queen in the row of each column.  Before proceeding to the next 
+column, the rec function has to validate the position of the new queen placed on 
+the board.  The validation function checks if the previous queens are not in the 
+same row or diagonal to the others.  It continues this process till the last 
+column and then prints the result if valid.  Then backtracks through the stacks 
+finding others placements that are a valid solution.
