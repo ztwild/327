@@ -1,4 +1,5 @@
 01/09/18: Started on the 'Eight Queens' assignment
 01/10/18: Initial program only found one solution from random placement of the first queen,
   started on new algorithm
-01/10/18: Finished 'Eight Queens' assignment, prints 92 solutions 
+01/10/18: Finished 'Eight Queens' assignment, prints 92 solutions
+01/15/18: Added a target that prints the solutions in a txt file and deletes the binary file.

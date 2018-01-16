@@ -7,6 +7,3 @@ the board.  The validation function checks if the previous queens are not in the
 same row or diagonal to the others.  It continues this process till the last 
 column and then prints the result if valid.  Then backtracks through the stacks 
 finding others placements that are a valid solution.
-
-
-Name of zip should be  wild_zach.assignment-0
