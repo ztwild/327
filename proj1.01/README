@@ -1,0 +1,2 @@
+dungeon: main.c
+  gcc -o dungeon main.c
