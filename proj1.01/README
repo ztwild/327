@@ -1,2 +1,8 @@
-dungeon: main.c
-  gcc -o dungeon main.c
+When running main.c, it starts with creating a dungeon, then initializing 
+the grid by setting the indices to the hardest value for a wall.  Then it randomly 
+generates 3 rooms, their size and top left position. Then it flips a coin whether to 
+add another room.  After all the rooms are made then it tries to place them on the grid, 
+if any intersect, it starts over by creating new rooms. Once it has an assortment of rooms 
+that satisfies the conditions, then it places the hallways in by finding a random spot in 
+each of the rooms and randomly picks to extend the hallway in the x or y direction to get 
+it closer to its destination.

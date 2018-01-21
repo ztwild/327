@@ -1,3 +1,4 @@
 01/17/18: Created structs for dungeons and rooms
 01/19/18: Radomly generate rooms, position, and size
 01/20/18: finished randomly generated rooms without intersecting
+01/20/18: finished hallway generation

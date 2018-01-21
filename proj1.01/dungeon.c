@@ -57,7 +57,35 @@ void insert_rooms(dungeon_t *d){
       int j = r->pos_y;
       int y = j + r->size_y;
       for(j; j < y; j++){
-        d->grid[i][j] = 0;
+        d->grid[i][j] = ROOM;
+      }
+    }
+  }
+}
+
+void insert_halls(dungeon_t *d){
+  int i = 0;
+  for(i = 0; i < d->room_count - 1; i++){
+    room_t *r1 = d->rooms[i];
+    room_t *r2 = d->rooms[i + 1];
+    int x1 = r1->pos_x + rand() % r1->size_x;
+    int y1 = r1->pos_y + rand() % r1->size_y;
+    int x2 = r2->pos_x + rand() % r2->size_x;
+    int y2 = r2->pos_y + rand() % r2->size_y;
+
+    // printf("Starting from (%d, %d) to (%d, %d)\n", x1,y1, x2, y2);
+
+    int x = x1 < x2 ? 1 : -1;
+    int y = y1 < y2 ? 1 : -1;
+
+    while(x1 != x2 || y1 != y2){
+      if((rand() % 2 && x1 != x2) || y1 == y2){
+        x1 = x1 + x;
+      }else{
+        y1 = y1 + y;
+      }
+      if(d->grid[x1][y1] != ROOM){
+        d->grid[x1][y1] = HALL;
       }
     }
   }
@@ -72,8 +100,11 @@ void print_grid(dungeon_t *d){
       if(n == 250){
         c = ' ';
       }
-      else if(n == 0){
+      else if(n == ROOM){
         c = '.';
+      }
+      else if(n == HALL){
+        c = '#';
       }
       printf("%c", c);
     }
