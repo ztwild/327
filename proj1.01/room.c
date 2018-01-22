@@ -11,8 +11,8 @@ room_t *create_room(){
   room_t *r = (room_t*)malloc(sizeof(room_t));
   // r->size_x = (rand() % (X_LENGTH - X_MIN)) + X_MIN;
   // r->size_y = (rand() % (Y_LENGTH - Y_MIN)) + Y_MIN;
-  r->size_x = (rand() % 18) + X_MIN;
-  r->size_y = (rand() % 18) + Y_MIN;
+  r->size_x = (rand() % MAX_LENGTH) + X_MIN;
+  r->size_y = (rand() % MAX_LENGTH) + Y_MIN;
 
   r->pos_x = rand() % (X_LENGTH - r->size_x);
   r->pos_y = rand() % (Y_LENGTH - r->size_y);
