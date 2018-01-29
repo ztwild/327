@@ -30,6 +30,14 @@ void init_rooms(dungeon_t *d){
   d->room_count = i;
 }
 
+void clear_rooms(dungeon_t *d){
+  int i;
+  for(i = 0; i < d->room_count; i++){
+    free(d->rooms[i]);
+  }
+  free(d->rooms);
+}
+
 int rooms_valid(dungeon_t *d){
   int i, j;
   for(i = 0; i < d->room_count - 1; i++){
