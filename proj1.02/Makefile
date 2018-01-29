@@ -1,5 +1,8 @@
-all: main.c
-	gcc -Wall -o main main.c
+rlg327: rlg327.c
+	gcc -Wall -o rlg327 rlg327.c
 
 clean:
-	rm -f *.o main
+	rm -f *.o rlg327
+
+test: rlg327
+	./rlg327 --load

@@ -1,10 +1,12 @@
+#include <stdint.h>
 #include "room.h"
 
+
 typedef struct room_t{
- unsigned char pos_y;
- unsigned char pos_x;
- unsigned char size_y;
- unsigned char size_x;
+ uint8_t pos_y;
+ uint8_t pos_x;
+ uint8_t size_y;
+ uint8_t size_x;
 }room_t;
 
 room_t *create_room(){

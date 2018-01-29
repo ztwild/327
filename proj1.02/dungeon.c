@@ -1,9 +1,10 @@
+#include <stdint.h>
 #include "dungeon.h"
 
 typedef struct dungeon_t{
-  unsigned char grid[X_LENGTH][Y_LENGTH];
+  uint8_t grid[X_LENGTH][Y_LENGTH];
   room_t **rooms;
-  unsigned  char room_count;
+  uint8_t room_count;
 }dungeon_t;
 
 void init_grid(dungeon_t *d){
@@ -130,4 +131,19 @@ void room_info(dungeon_t *d){
     room_t *r = d->rooms[i];
     printf("Room %d at (%d, %d), size of %d x %d\n", i, r->pos_x, r->pos_y, r->size_x, r->size_y);
   }
+}
+
+dungeon_t *new_dungeon(){
+  dungeon_t *dungeon = (dungeon_t*)malloc(sizeof(dungeon_t));
+  init_grid(dungeon);
+  init_rooms(dungeon);
+  int valid = rooms_valid(dungeon);
+  while(!valid){
+    init_rooms(dungeon);
+    valid = rooms_valid(dungeon);
+  }
+
+  insert_rooms(dungeon);
+  insert_halls(dungeon);
+  return dungeon;
 }
