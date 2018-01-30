@@ -7,8 +7,6 @@
 #define SAVE "--save"
 #define LOAD "--load"
 
-
-
 int main(int argc, char **argv){
   int load, save = 0;
   dungeon_t *dungeon;

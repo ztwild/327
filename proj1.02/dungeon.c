@@ -1,11 +1,4 @@
-#include <stdint.h>
 #include "dungeon.h"
-
-typedef enum grid_t{
-  HALL,
-  WALL,
-  ROOM
-}grid_t;
 
 typedef struct dungeon_t{
   uint8_t hardness[Y_LENGTH][X_LENGTH];

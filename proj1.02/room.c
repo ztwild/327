@@ -1,6 +1,4 @@
-#include <stdint.h>
 #include "room.h"
-
 
 typedef struct room_t{
  uint8_t pos_y;
