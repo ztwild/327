@@ -3,10 +3,9 @@
 #include <time.h>
 #include "room.c"
 
-#define hardness 250
+#define HARDNESS 255
 #define ROOM_MIN 5
-#define ROOM 0
-#define HALL 0
+
 
 typedef struct dungeon_t dungeon_t;
 

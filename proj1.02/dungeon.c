@@ -1,8 +1,15 @@
 #include <stdint.h>
 #include "dungeon.h"
 
+typedef enum grid_t{
+  HALL,
+  WALL,
+  ROOM
+}grid_t;
+
 typedef struct dungeon_t{
-  uint8_t grid[X_LENGTH][Y_LENGTH];
+  uint8_t hardness[Y_LENGTH][X_LENGTH];
+  grid_t grid[Y_LENGTH][X_LENGTH];
   room_t **rooms;
   uint8_t room_count;
 }dungeon_t;
@@ -11,7 +18,8 @@ void init_grid(dungeon_t *d){
   int x, y;
   for(x = 0; x < X_LENGTH; x++){
     for(y = 0; y < Y_LENGTH; y++){
-      d->grid[x][y] = hardness;
+      d->hardness[y][x] = HARDNESS;
+      d->grid[y][x] = WALL;
     }
   }
 }
@@ -39,9 +47,6 @@ void clear_rooms(dungeon_t *d){
   free(d->rooms);
 }
 
-void clear_grid(dungeon_t *d){
-  free(d->grid);
-}
 
 int rooms_valid(dungeon_t *d){
   int i, j;
@@ -66,11 +71,12 @@ void insert_rooms(dungeon_t *d){
     int i = r->pos_x;
     int x = i + r->size_x;
     
-    for(i; i < x; i++){
+    for(i = i; i < x; i++){
       int j = r->pos_y;
       int y = j + r->size_y;
-      for(j; j < y; j++){
-        d->grid[i][j] = ROOM;
+      for(j = j; j < y; j++){
+        d->grid[j][i] = ROOM;
+        d->hardness[j][i] = 0;
       }
     }
   }
@@ -97,8 +103,9 @@ void insert_halls(dungeon_t *d){
       }else{
         y1 = y1 + y;
       }
-      if(d->grid[x1][y1] != ROOM){
-        d->grid[x1][y1] = HALL;
+      if(d->grid[y1][x1] != ROOM){
+        d->grid[y1][x1] = HALL;
+        d->hardness[y1][x1] = 0;
       }
     }
   }
@@ -108,20 +115,28 @@ void print_grid(dungeon_t *d){
   int x, y;
   for(y = 0; y < Y_LENGTH; y++){
     for(x = 0; x < X_LENGTH; x++){
-      int n = d->grid[x][y];
-      char c;
-      if(n == 250){
-        c = ' ';
+      switch(d->grid[y][x]){
+      case ROOM:
+        printf(".");
+        break;
+      case HALL:
+        printf("#");
+        break;
+      case WALL:
+        printf(" ");
+        break;
       }
-      else if(n == ROOM){
-        c = '.';
-      }
-      else if(n == HALL){
-        c = '#';
-      }
-      printf("%c", c);
     }
-    printf("\n");
+    printf("\n");  
+  }
+}
+
+void hardness_to_grid(dungeon_t *d){
+  int x, y;
+  for(x = 0; x < X_LENGTH; x++){
+    for(y = 0; y < Y_LENGTH; y++){
+      d->grid[y][x] = d->hardness[y][x] > 0 ? WALL : HALL; 
+    }
   }
 }
 
@@ -134,16 +149,16 @@ void room_info(dungeon_t *d){
 }
 
 dungeon_t *new_dungeon(){
-  dungeon_t *dungeon = (dungeon_t*)malloc(sizeof(dungeon_t));
-  init_grid(dungeon);
-  init_rooms(dungeon);
-  int valid = rooms_valid(dungeon);
+  dungeon_t *d = (dungeon_t*)malloc(sizeof(dungeon_t));
+  init_grid(d);
+  init_rooms(d);
+  int valid = rooms_valid(d);
   while(!valid){
-    init_rooms(dungeon);
-    valid = rooms_valid(dungeon);
+    init_rooms(d);
+    valid = rooms_valid(d);
   }
 
-  insert_rooms(dungeon);
-  insert_halls(dungeon);
-  return dungeon;
+  insert_rooms(d);
+  insert_halls(d);
+  return d;
 }

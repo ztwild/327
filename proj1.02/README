@@ -1,0 +1,6 @@
+Run 'make' in the terminal. Then execute ./rlg327 to print a randomly generated dungeon.
+user can also use the commands '--save' and/or '--load'. The program will first make sure
+ther are no more than three arguments. If there are more that 1, then it will check to 
+see if the commands are equal to the strings for load and save and toggle the 
+coresponding ints. Depending on what ints are toggled it will first load or create a new 
+dungeon, print the dungeon, then save the dungeon if specified. 
