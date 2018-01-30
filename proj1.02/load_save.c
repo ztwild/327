@@ -34,6 +34,7 @@ dungeon_t *load_dungeon(){
     fprintf(stderr, "Couldn't open file\n");
     return NULL;
   }
+  free(file_path);
   
   fread(semantic, sizeof(char), 12, f);
   fread(&version, sizeof(uint32_t), 1, f);
@@ -57,7 +58,6 @@ dungeon_t *load_dungeon(){
   insert_rooms(d);
   
   fclose(f);
-  free(file_path);
   return d;
 }
 
@@ -75,6 +75,7 @@ int save_dungeon(dungeon_t *d){
     fprintf(stderr, "Couldn't open file\n");
     return 0;
   }
+  free(file_path);
   
   fwrite(SEMANTIC, sizeof(char), 12, f);
   fwrite(&version, sizeof(uint32_t), 1, f);
@@ -92,7 +93,6 @@ int save_dungeon(dungeon_t *d){
   free(d->rooms);
   free(d);
   fclose(f);
-  free(file_path);
   return 1;
 }
 

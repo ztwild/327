@@ -4,5 +4,3 @@ rlg327: rlg327.c
 clean:
 	rm -f *.o rlg327
 
-test: rlg327
-	./rlg327 --load
