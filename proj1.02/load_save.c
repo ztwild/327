@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <endian.h>
 #include <string.h>
+#include <unistd.h>
 #include "dungeon.c"
 #include "utils.c"
 
@@ -11,11 +12,11 @@
 #define SEMANTIC "RLG327-S2018"
 
 char *get_path(){
-  int length = strlen(getenv("HOME")) + strlen(FILE_PATH) + 1;
+  int length = 1024 + strlen(FILE_PATH) + 1;
   char *p = malloc(sizeof(char) * length);
-  strcpy(p, getenv("HOME"));
+  getcwd(p, length);
   strcat(p, FILE_PATH);
-  printf("File Path: %s\n", p);
+  //printf("File Path: %s\n", p);
   return p;
 }
 
