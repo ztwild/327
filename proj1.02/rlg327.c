@@ -8,7 +8,7 @@
 #define LOAD "--load"
 
 int main(int argc, char **argv){
-  int load, save = 0;
+  int load = 0, save = 0;
   dungeon_t *dungeon;
   srand(time(NULL));
   
@@ -29,6 +29,7 @@ int main(int argc, char **argv){
     }
     
     dungeon = load ? load_dungeon() : new_dungeon();
+    
   }
   else{
     dungeon = new_dungeon();
