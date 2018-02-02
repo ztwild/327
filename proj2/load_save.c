@@ -7,7 +7,7 @@
 #include "dungeon.c"
 #include "utils.c"
 
-//#define FILE_PATH "examples/1522914515.rlg327"
+//#define FILE_PATH "/examples/1522914515.rlg327"
 #define FILE_PATH "/.rlg327/dungeon"
 #define SEMANTIC "RLG327-S2018"
 

@@ -7,3 +7,7 @@ clean:
 open: Makefile rlg327.c load_save.c dungeon.c room.c
 	gedit Makefile rlg327.c load_save.c dungeon.c room.c &
 
+test: test.c
+	gcc -o test test.c
+	./test > out
+	rm test
