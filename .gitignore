@@ -2,4 +2,5 @@
 *.obj
 *.txt
 rlg327
-
+test*
+examples

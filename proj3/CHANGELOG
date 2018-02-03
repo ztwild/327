@@ -1,0 +1,21 @@
+assignment 1.01
+01/17/18: Created structs for dungeons and rooms
+01/19/18: Radomly generate rooms, position, and size
+01/20/18: finished randomly generated rooms without intersecting
+01/20/18: finished hallway generation
+
+assignment 1.02
+01/24/18: Starting assignment
+01/28/18: Saves bianry file fo the dungeon
+01/28/18: Reads the binary file but is slightly off
+01/29/18: Flip-Flopped the demensions of the hardness in dungeon
+01/29/18: changed main.c to rlg327.c
+01/29/18: Examples given read correctly
+01/29/18: Saves and reloads correctly
+01/29/18: Gets the full path name
+
+assignment 1.03
+02/02/18: Created & finished bfs for pathes in open areas
+02/02/18: Created queue.c, and started dijkstras algorithm
+02/02/18: Used the smooth_hardness funtion from solution 1.01
+02/03/18: 
