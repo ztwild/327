@@ -46,13 +46,16 @@ void enqueue(queue_t *q, void *value){
   q->size++;
 }
 
-node_t *dequeue(queue_t *q){
-  node_t *n = NULL;
+void *dequeue(queue_t *q){
+  void *value = NULL;
   if(q->size){
-    n = q->first;
+    q->size--;
+    node_t *n = q->first;
     q->first = n->next;
     n->next = NULL;
-    q->size--;
+    value = n->value;
+    n->value = NULL;
+    free(n);
   }
-  return n;
+  return value;
 }

@@ -9,22 +9,16 @@
 #define SAVE "--save"
 #define LOAD "--load"
 
-/**
-void print_hardness(dungeon_t *d){
-  int y, x;
-  for(x = 0; x < X_LENGTH; x++){
-    for(y = 0; y < Y_LENGTH; y++){
-      printf("%3d ", d->hardness[y][x]);
-    }
-    printf("\n");
-  }
-}
-**/
 
 int main(int argc, char **argv){
   int load = 0, save = 0;
   dungeon_t *dungeon;
   srand(time(NULL));
+  
+  //int t = time(NULL);
+  //int t = 1517710594;
+  //srand(t);
+  //printf("Time seed is %d\n", t);
   
   if(argc > 3){
     fprintf(stderr, "Too many arguments\n");
@@ -51,24 +45,30 @@ int main(int argc, char **argv){
   
   print_grid(dungeon);
   
-  ///**
+  /**
+    * Path in open area
+   **/
   path_t *path = (path_t*)malloc(sizeof(path_t));
-  init_path(path);
   pair_t *start = pc_start(dungeon);
+  init_path(path);
   bfs(dungeon, path, start);
   print_path_open(path);
-  //**/
   
-  //dijkstra(dungeon, path, start);
-  //print_path_wall(path);
   
-  //free(start);
+  dijkstra(dungeon, path, start);
+  print_path_wall(path, start);
+  
+  free(start);
+  
   //print_hardness(dungeon);
   
   ///** Tests
   //test();
-  test2(dungeon, path, start);
-  print_path_wall(dungeon, path);
+  
+  //test2(dungeon, path, start);
+  //print_path_wall(dungeon, path);
+  
+  //test3();
   //**/
   
   if(save){

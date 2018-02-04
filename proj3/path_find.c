@@ -40,8 +40,11 @@ pair_t *pc_start(dungeon_t *d){
   return p;
 }
 
+/**
+  * Path finding through open areas
+ **/
+
 void bfs(dungeon_t *d, path_t *p, pair_t *start){
-  //printf("Starting at (%d, %d)\n", start->x, start->y);
   bfs_rec(d, p, start, 0);  
 }
 
@@ -50,8 +53,6 @@ int bfs_rec(dungeon_t *d, path_t *p, pair_t *pair, int count){
   int x, y;
   
   int kill = d->hardness[pair->y][pair->x] == 255;
-  //int kill = pair->x >= X_LENGTH - 1 || pair->y >= Y_LENGTH - 1;
-  //kill |= pair->x <= 0 || pair->y <= 0;
     
   if(kill){
     return 1;
@@ -92,106 +93,56 @@ void print_path_open(path_t *p){
   }
 }
 
-void test(){
-  int i, j, count;
-  queue_t *q = init_queue();
-  for(j = 0; j < Y_LENGTH; j++){
-    for(i = 0; i < X_LENGTH; i++){
-      count++;
-      pair_t *p = create_pair(i, j);
-      node_t *n = create_node((void*)p);
-      enqueue(q, n);
-      //printf("count: %d\n", count);
-    }
-  }
-  printf("Size of queue: %d\n", q->size);
-  
-  node_t *n;
-  while(n = dequeue(q)){
-    pair_t *p = (pair_t*)n->value;
-    free(p);
-    free(n);
-  }
-  printf("Size of queue: %d\n", q->size);
-}
+/**
+  * Path finding with walls
+ **/
 
-void test2(dungeon_t *d, path_t *p, pair_t *start){
-  int i, j;
-  
-  for(j = 0; j < Y_LENGTH; j++){
-    for(i = 0; i < X_LENGTH; i++){
-      int weight = d->grid[j][i] == WALL ? d->hardness[j][i] / 85 : 1;
-      p->wall[j][i] = weight;  
-    }
-  }
-  p->wall[start->y][start->x] = 0;
-  
-}
 
 void dijkstra(dungeon_t *d, path_t *p, pair_t *start){
   int i, j, y, x;
+  int unvisited = (X_LENGTH - 2) * (Y_LENGTH - 2) - 1;
   p->wall[start->y][start->x] = 0;
-  printf("Setting starting position (%d, %d)\n", start->x, start->y);
+  pair_t *temp_pair = create_pair(start->x, start->y);
   queue_t *q = init_queue();
-  printf("Created Queue\n");
-  enqueue(q, (void*)start);
-  printf("Put start into queue\n");
-  node_t *n;
+  enqueue(q, (void*)temp_pair);
   
-  int count = 0;
-  while(n = dequeue(q)){
-    printf("Dequeued node #%d\n", count++);
-    printf("Size of queue: %d\n", q->size);
-    pair_t *pair = (pair_t*)n->value;
-    printf("Extracted pair from node\n");
-    int this_weight = p->wall[pair->y][pair->x];
-    printf("The weight of this position is %d\n", this_weight);
+  while(unvisited != 0){
+    pair_t *pair = (pair_t*)dequeue(q);
     for(j = -1; j < 2; j++){
       for(i = -1; i < 2; i++){
-        
-        x = pair->x + i;
-        y = pair->y + j;
-        
-        int weight = d->hardness[y][x] == 0 ? 1 : d->hardness[y][x] / 85;
-        int in_bounds = d->hardness[y][x] < 255;
-        
-        if(in_bounds && this_weight + weight < p->wall[y][x]){
-          printf("\tgot (%d, %d)\n", x, y);
-          printf("\tWeight at (%d, %d) is %d\n", x, y, weight);
-          printf("\tGrid (%d, %d) in bounds: %d\n", x, y, in_bounds);
-          p->wall[y][x] = this_weight + weight;
-          pair_t *temp = create_pair(x, y);
-          enqueue(q, (void*)temp);
-          printf("\tpushed (%d, %d) to queue\n\n", x, y);
+        x = i + pair->x;
+        y = j + pair->y;
+        if(d->hardness[y][x] < 255){ //in bounds
+          int weight = d->grid[y][x] != WALL ? 1 : d->hardness[y][x] / 85;
+          weight += p->wall[pair->y][pair->x];
+          if(p->wall[y][x] == 255){
+            unvisited--;
+            temp_pair = create_pair(x, y);
+            enqueue(q, (void*)temp_pair);
+          }
+          p->wall[y][x] = min(weight, p->wall[y][x]);
         }
       }
     }
     free(pair);
-    free(n);
   }
 }
 
-void print_path_wall(dungeon_t *d, path_t *p){
+void print_path_wall(path_t *p, pair_t *pc){
   int i, j;
   
   for(j = 0; j < Y_LENGTH; j++){
     for(i = 0; i < X_LENGTH; i++){
-      if(p->wall[j][i] == 3){
-        printf("X");
-      }else if(p->wall[j][i] == 0 && d->grid[j][i] == ROOM){
+      if(p->wall[j][i] == 255){
+        printf(" ");
+      }else if(pc->x == i && pc->y == j){
         printf("@");
-      }else if(p->wall[j][i] == 1 && (d->grid[j][i] == ROOM || d->grid[j][i] == HALL)){
-        //printf(" ");
-        printf("%d", p->wall[j][i]);
-      }else if(d->grid[j][i] == WALL){
-        printf("%d", p->wall[j][i]);
       }else{
-        printf("?");
+        printf("%d", p->wall[j][i] % 10);
       }
     }
     printf("\n");
   }
 }
-
 
 
