@@ -18,4 +18,4 @@ assignment 1.03
 02/02/18: Created & finished bfs for pathes in open areas
 02/02/18: Created queue.c, and started dijkstras algorithm
 02/02/18: Used the smooth_hardness funtion from solution 1.01
-02/03/18: 
+02/03/18: Finished dijkstras, needs more testing
