@@ -11,11 +11,10 @@
 #define SEMANTIC "RLG327-S2018"
 
 char *get_path(){
-  int length = 1024 + strlen(FILE_PATH) + 1;
+  int length = strlen(getenv("HOME")) + strlen(FILE_PATH) + 1;
   char *p = malloc(sizeof(char) * length);
-  getcwd(p, length);
+  strcpy(p, getenv("HOME"));
   strcat(p, FILE_PATH);
-  //printf("File Path: %s\n", p);
   return p;
 }
 

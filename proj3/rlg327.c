@@ -60,17 +60,6 @@ int main(int argc, char **argv){
   
   free(start);
   
-  //print_hardness(dungeon);
-  
-  ///** Tests
-  //test();
-  
-  //test2(dungeon, path, start);
-  //print_path_wall(dungeon, path);
-  
-  //test3();
-  //**/
-  
   if(save){
     save_dungeon(dungeon);    
   }
