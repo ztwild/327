@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include "utils.c"
 
-//#define FILE_PATH "/examples/1522914515.rlg327"
 #define FILE_PATH "/.rlg327/dungeon"
 #define SEMANTIC "RLG327-S2018"
 
@@ -18,13 +17,15 @@ char *get_path(){
   return p;
 }
 
-dungeon_t *load_dungeon(char *file_name){
+//dungeon_t *load_dungeon(char *file_name){
+dungeon_t *load_dungeon(){
   int i;
   uint32_t version, size, little_endian;
   char *semantic = malloc(sizeof(char) * 12);
   
-  //char *file_path = get_path();
+  char *file_path = get_path();
   
+  /**
   char *temp = "examples/";
   char *temp2 = ".rlg327";
   int length = strlen(file_name) + strlen(temp) + strlen(temp2) + 1;
@@ -32,6 +33,7 @@ dungeon_t *load_dungeon(char *file_name){
   file_path = strcpy(file_path, temp);
   file_path = strcat(file_path, file_name);
   file_path = strcat(file_path, temp2);
+  **/
   
   dungeon_t *d = (dungeon_t*)malloc(sizeof(dungeon_t));
   init_grid(d);

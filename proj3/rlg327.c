@@ -31,7 +31,8 @@ int main(int argc, char **argv){
       return 1;
     }
     
-    dungeon = load ? load_dungeon("1521618087") : new_dungeon();
+    dungeon = load ? load_dungeon() : new_dungeon();
+    //dungeon = load ? load_dungeon("1521618087") : new_dungeon();
     
   }
   else{
@@ -43,8 +44,8 @@ int main(int argc, char **argv){
   path_t *path = (path_t*)malloc(sizeof(path_t));
   pair_t *start = pc_start(dungeon);
   
-  start->x = 60;
-  start->y = 5;
+  //start->x = 60;
+  //start->y = 5;
   
   set_pc(dungeon, start->x, start->y);
   init_path(path);

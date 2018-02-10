@@ -113,7 +113,7 @@ void dijkstra(dungeon_t *d, path_t *p, pair_t *start){
         x = i + pair->x;
         y = j + pair->y;
         if(d->hardness[y][x] < 255){ //in bounds
-          int weight = d->grid[y][x] != WALL ? 2 : (d->hardness[y][x] / 85) + 1;
+          int weight = d->grid[y][x] != WALL ? 1 : d->hardness[y][x] / 85;
           weight += p->wall[pair->y][pair->x];
           if(p->wall[y][x] == 255){
             unvisited--;

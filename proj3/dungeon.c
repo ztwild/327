@@ -39,7 +39,7 @@ void init_rooms(dungeon_t *d){
   d->room_count = i;
 }
 
-void *set_pc(dungeon_t *d, int x, int y){
+void set_pc(dungeon_t *d, int x, int y){
   d->grid[y][x] = PC;
 }
 
