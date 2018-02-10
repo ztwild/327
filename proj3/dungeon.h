@@ -10,7 +10,8 @@
 typedef enum grid_t{
   HALL,
   WALL,
-  ROOM
+  ROOM,
+  PC
 }grid_t;
 
 typedef struct dungeon_t dungeon_t;

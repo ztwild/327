@@ -15,11 +15,6 @@ int main(int argc, char **argv){
   dungeon_t *dungeon;
   srand(time(NULL));
   
-  //int t = time(NULL);
-  //int t = 1517710594;
-  //srand(t);
-  //printf("Time seed is %d\n", t);
-  
   if(argc > 3){
     fprintf(stderr, "Too many arguments\n");
     return 1;
@@ -36,26 +31,29 @@ int main(int argc, char **argv){
       return 1;
     }
     
-    dungeon = load ? load_dungeon() : new_dungeon();
+    dungeon = load ? load_dungeon("1521618087") : new_dungeon();
     
   }
   else{
     dungeon = new_dungeon();
   }
   
-  print_grid(dungeon);
   
-  /**
-    * Path in open area
-   **/
+  /** Path in open area **/
   path_t *path = (path_t*)malloc(sizeof(path_t));
   pair_t *start = pc_start(dungeon);
+  
+  start->x = 60;
+  start->y = 5;
+  
+  set_pc(dungeon, start->x, start->y);
   init_path(path);
   bfs(dungeon, path, start);
-  print_path_open(path);
-  
-  
   dijkstra(dungeon, path, start);
+  
+  /** Print Dungeon **/
+  print_grid(dungeon);
+  print_path_open(path);
   print_path_wall(path, start);
   
   free(start);

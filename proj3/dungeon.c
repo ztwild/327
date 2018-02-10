@@ -39,6 +39,10 @@ void init_rooms(dungeon_t *d){
   d->room_count = i;
 }
 
+void *set_pc(dungeon_t *d, int x, int y){
+  d->grid[y][x] = PC;
+}
+
 void clear_rooms(dungeon_t *d){
   int i;
   for(i = 0; i < d->room_count; i++){
@@ -116,6 +120,9 @@ void print_grid(dungeon_t *d){
   for(y = 0; y < Y_LENGTH; y++){
     for(x = 0; x < X_LENGTH; x++){
       switch(d->grid[y][x]){
+      case PC:
+        printf("@");
+        break;
       case ROOM:
         printf(".");
         break;
