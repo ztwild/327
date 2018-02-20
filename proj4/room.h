@@ -14,10 +14,6 @@
 
 typedef struct room_t room_t;
 
-typedef struct pair pair_t;
-
-pair_t *create_pair(int, int);
-
 room_t *create_room();
 
 int rooms_intersect(room_t *, room_t *);

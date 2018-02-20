@@ -7,15 +7,12 @@
 #include <string.h>
 #include <time.h>
 #include "room.c"
-#include "monster.c"
+#include "character.c"
 
 #define HARDNESS 255
 #define ROOM_MIN 5
 
-typedef enum char_type{
-  PC,
-  MON
-}type_t;
+
 
 typedef enum grid_t{
   HALL,
@@ -34,7 +31,7 @@ void init_grid(dungeon_t *);
 
 void init_rooms(dungeon_t *);
 
-void init_monsters(dungeon_t *);
+void init_characters(dungeon_t *);
 
 void clear_rooms(dungeon_t *);
 

@@ -7,18 +7,6 @@ typedef struct room_t{
  uint8_t size_x;
 }room_t;
 
-typedef struct pair{
-  uint8_t x;
-  uint8_t y;
-}pair_t;
-
-pair_t *create_pair(int x, int y){
-  pair_t *p = (pair_t*)malloc(sizeof(pair_t));
-  p->x = x;
-  p->y = y;
-  return p;
-}
-
 room_t *create_room(){
   room_t *r = (room_t*)malloc(sizeof(room_t));
   // r->size_x = (rand() % (X_LENGTH - X_MIN)) + X_MIN;

@@ -10,9 +10,9 @@ typedef struct dungeon_t{
   
   uint8_t open[Y_LENGTH][X_LENGTH];
   uint8_t wall[Y_LENGTH][X_LENGTH];
-  pair_t *pc;
+  character_t *pc;
   
-  monster_t **monsters;
+  character_t **monsters;
   uint8_t nummon;
 }dungeon_t;
 
@@ -45,6 +45,8 @@ void init_grid(dungeon_t *d){
   
 }
 
+
+
 void init_rooms(dungeon_t *d){
   int i;
   d->rooms = (room_t**)malloc(sizeof(room_t*) * ROOM_MIN);
@@ -60,11 +62,12 @@ void init_rooms(dungeon_t *d){
   d->room_count = i;
 }
 
-void init_monsters(dungeon_t *d){
+void init_characters(dungeon_t *d){
   int i;
-  d->monsters = (monster_t**)malloc(sizeof(monster_t*) * d->nummon);
+  d->pc = create_pc();
+  d->monsters = (character_t**)malloc(sizeof(character_t*) * d->nummon);
   for(i = 0; i < d->nummon; i++){
-    d->monsters[i] = create_monster();
+    d->monsters[i] = create_monster(i);
     pair_t *pos;
     if(d->monsters[i]->attr & 0xf4){ //Tunneling ability
       int x = (rand() % X_LENGTH - 2) + 1;
@@ -72,7 +75,7 @@ void init_monsters(dungeon_t *d){
       pos = create_pair(x, y);
     }
     else{
-      pos = rand_start(d, MON);
+      pos = rand_start(d, NPC);
     }
     d->monsters[i]->pos = pos;
   }
@@ -156,7 +159,8 @@ void print_grid(dungeon_t *d){
   char c;
   for(y = 0; y < Y_LENGTH; y++){
     for(x = 0; x < X_LENGTH; x++){
-      if(d->pc->x == x && d->pc->y == y){
+      character_t *pc = d->pc;
+      if(pc->pos->x == x && pc->pos->y == y){
         c = '@';
       }
       else if(d->grid[y][x] == ROOM){
@@ -170,7 +174,7 @@ void print_grid(dungeon_t *d){
       }
       
       for(i = 0; i < d->nummon; i++){
-        monster_t *m = d->monsters[i];
+        character_t *m = d->monsters[i];
         if(m->pos->x == x && m->pos->y == y){
           c = m->attr > 9 ? (m->attr - 10) + 'a' : m->attr + '0';
         }

@@ -7,25 +7,6 @@
 
 dungeon_t *dungeon;
 
-void move_pc(){
-  int ch = getch();
-  pair_t *p = dungeon->pc;
-  switch(ch){
-  case KEY_LEFT:
-    p->x = p->x - 1;
-    break;
-  case KEY_RIGHT:
-    p->x = p->x + 1;
-    break;
-  case KEY_UP:
-    p->y = p->y + 1;
-    break;
-  case KEY_DOWN:
-    p->y = p->y - 1;
-    break;
-  }
-  dungeon->pc = p;
-}
 
 void init_game(uint8_t load, uint8_t nummon){
   dungeon = load ? load_dungeon() : new_dungeon();
@@ -33,8 +14,7 @@ void init_game(uint8_t load, uint8_t nummon){
   printf("There should be %d monsters\n", nummon);
   
   /** path_find **/
-  dungeon->pc = rand_start(dungeon, PC);
-  init_monsters(dungeon);
+  init_characters(dungeon);
   init_path(dungeon);
   bfs(dungeon);
   dijkstra(dungeon);
