@@ -68,7 +68,7 @@ void init_characters(dungeon_t *d){
   d->pc->pos = rand_start(d, PC);
   d->monsters = (character_t**)malloc(sizeof(character_t*) * d->nummon);
   for(i = 0; i < d->nummon; i++){
-    d->monsters[i] = create_monster(i);
+    d->monsters[i] = create_monster(i+1);
     pair_t *pos;
     if(d->monsters[i]->attr & 0xf4){ //Tunneling ability
       int x = (rand() % X_LENGTH - 2) + 1;

@@ -5,7 +5,10 @@
 #define MIN_SP 5
 #define MAX_HEALTH 10
 
-typedef enum char_type type_t;
+typedef enum char_type{
+  PC,
+  NPC
+}type_t;
 
 typedef struct pair pair_t;
 

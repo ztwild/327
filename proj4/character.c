@@ -66,9 +66,10 @@ character_t *create_monster(uint32_t time){
   return m;
 }
 
-int compare(character_t *c1, character_t *c2){
-  int turn = c1->turn < c2->turn;
-  int time = c1->turn == c2->turn && c1->time < c2->time;
+int compare_characters(const void *c1, const void *c2){
+  int turn = (*((character_t**) c1))->turn < (*((character_t**) c2))->turn;
+  int time = (*((character_t**) c1))->turn == (*((character_t**) c2))->turn 
+                && (*((character_t**) c1))->time < (*((character_t**) c2))->time;
   return turn || time;
 }
 
