@@ -75,9 +75,11 @@ void print_path_open(dungeon_t *d){
 void dijkstra(dungeon_t *d){
   int i, j, y, x;
   int unvisited = (X_LENGTH - 2) * (Y_LENGTH - 2) - 1;
-  pair_t *start = d->pc->pos;
-  d->wall[start->y][start->x] = 0;
-  pair_t *temp_pair = create_pair(start->x, start->y);
+  //pair_t *start = d->pc->pos;
+  x = d->pc->pos->x;
+  y = d->pc->pos->y;
+  d->wall[y][x] = 0;
+  pair_t *temp_pair = create_pair(x, y);
   queue_t *q = init_queue();
   enqueue(q, (void*)temp_pair);
   

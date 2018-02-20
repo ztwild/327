@@ -65,6 +65,7 @@ void init_rooms(dungeon_t *d){
 void init_characters(dungeon_t *d){
   int i;
   d->pc = create_pc();
+  d->pc->pos = rand_start(d, PC);
   d->monsters = (character_t**)malloc(sizeof(character_t*) * d->nummon);
   for(i = 0; i < d->nummon; i++){
     d->monsters[i] = create_monster(i);

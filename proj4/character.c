@@ -1,11 +1,4 @@
-#define MAX_SP 20
-#define MIN_SP 5
-#define MAX_HEALTH 10
-
-typedef enum char_type{
-  PC,
-  NPC
-}type_t;
+#include "character.h"
 
 typedef struct pair{
   uint8_t x;
@@ -21,6 +14,7 @@ pair_t *create_pair(int x, int y){
 
 typedef struct character{
   type_t type;
+  uint8_t alive;
   uint32_t turn;
   uint32_t health;
   uint8_t speed;
@@ -32,6 +26,7 @@ typedef struct character{
 character_t *create_pc(){
   character_t *pc = (character_t*)malloc(sizeof(character_t));
   pc->type = PC;
+  pc->alive = 1;
   pc->turn = 0;
   pc->health = MAX_HEALTH;
   pc->speed = 10;
@@ -43,6 +38,7 @@ character_t *create_pc(){
 character_t *create_monster(uint32_t time){
   character_t *m = (character_t*)malloc(sizeof(character_t));
   m->type = NPC;
+  m->alive = 1;
   m->turn = 0;
   m->speed = (rand() % (MAX_SP - MIN_SP)) + MIN_SP;
   m->time = time;
@@ -75,3 +71,5 @@ int compare(character_t *c1, character_t *c2){
   int time = c1->turn == c2->turn && c1->time < c2->time;
   return turn || time;
 }
+
+
