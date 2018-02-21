@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "queue.c"
+//#include "queue.c"
 
 void init_path(dungeon_t *);
 

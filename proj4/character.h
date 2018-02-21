@@ -5,6 +5,8 @@
 #define MIN_SP 5
 #define MAX_HEALTH 10
 
+//#include "queue.c"
+
 typedef enum char_type{
   PC,
   NPC

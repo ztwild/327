@@ -1,6 +1,6 @@
 LDFLAGS = -lncurses
 
-rlg327: rlg327.c
+rlg327: rlg327.c character.c game.c queue.c
 	gcc -Wall -o $@ rlg327.c $(LDFLAGS)
 
 clean:

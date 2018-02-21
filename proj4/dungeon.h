@@ -12,8 +12,6 @@
 #define HARDNESS 255
 #define ROOM_MIN 5
 
-
-
 typedef enum grid_t{
   HALL,
   WALL,

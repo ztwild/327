@@ -25,3 +25,5 @@ assignment 1.03
 assignment 1.04
 02/19/18: Started assignment, creates monsters and uses nummon switch
 02/19/18: Prints monsters and their position
+02/20/18: Made priority with general sort
+02/20/18: Moves monster according to their attribute, and end after palyer death

@@ -46,25 +46,37 @@ void enqueue(queue_t *q, void *value){
   q->size++;
 }
 
-void enqueue_sort(queue_t *q, void *value, 
+void enqueue_sort(queue_t *q, void *v, 
                       int(*comp)(const void *, const void *))
 {
-  node_t *n = create_node(value);
+  node_t *n = create_node(v);
   
   if(!q->first){
     q->first = n;
   }
-  else if(comp(value, q->first->value)){
+  else if(comp(v, q->first->value)){
     n->next = q->first;
     q->first = n;
   }
   else{
-    node_t *temp = q->first;
-    while(temp->next && !comp(value, temp->value)){
-      temp = temp->next;
+    int inserted = 0;
+    node_t *prev = q->first;
+    node_t *cur = prev->next;
+    while(!inserted){
+      if(!cur){
+        prev->next = n;
+        inserted = 1;
+      }
+      else if(comp(v, cur->value)){
+        n->next = cur;
+        prev->next = n;
+        inserted = 1;
+      }
+      else{
+        prev = cur;
+        cur = cur->next;
+      }
     }
-    n->next = temp->next;
-    temp->next = n;
   }
   q->size++;
 }

@@ -70,7 +70,7 @@ void init_characters(dungeon_t *d){
   for(i = 0; i < d->nummon; i++){
     d->monsters[i] = create_monster(i+1);
     pair_t *pos;
-    if(d->monsters[i]->attr & 0xf4){ //Tunneling ability
+    if(d->monsters[i]->attr & 0x04){ //Tunneling ability
       int x = (rand() % X_LENGTH - 2) + 1;
       int y = (rand() % Y_LENGTH - 2) + 1;
       pos = create_pair(x, y);
