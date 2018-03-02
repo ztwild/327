@@ -33,5 +33,5 @@ assignment 1.05
 02/24/18: started assignment, initialized ncurses in assignment
 02/24/18: Grid printing works, pc can move and attack monsters, can quit
 03/01/18: Prints & traverse monster list info
-03/01/18: 
+03/01/18: Can traverse stairs and redraw dungeon
 

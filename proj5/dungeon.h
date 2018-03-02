@@ -31,7 +31,9 @@ void init_grid(dungeon_t *);
 
 void init_rooms(dungeon_t *);
 
-void init_characters(dungeon_t *);
+void init_pc(dungeon_t *);
+
+void init_monsters(dungeon_t *);
 
 void clear_rooms(dungeon_t *);
 

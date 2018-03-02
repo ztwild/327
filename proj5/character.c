@@ -30,7 +30,7 @@ character_t *create_pc(){
   pc->turn = 0;
   pc->health = MAX_HEALTH;
   pc->speed = 10;
-  pc-> time = 0;
+  pc->time = 0;
   pc->attr = '\0';
   return pc;
 }
@@ -51,18 +51,7 @@ character_t *create_monster(uint32_t time){
   m->attr |= (T << 1);
   m->attr |= (A << 2);
   m->attr |= (E << 3);
-  /**
-  m->attr = rand() % 2;
-  m->attr |= (rand() % 2) << 1;
-  m->attr |= (rand() % 2) << 2;
-  m->attr |= (rand() % 2) << 3;
-  **/
-  /**
-  char c = m->attr > 9 ? (m->attr - 10) + 'a' : m->attr + '0';
-  printf("Monster type %2d  ", m->attr);
-  printf("%1x  ", m->attr);
-  printf("%c\n", c);
-  **/
+  
   return m;
 }
 

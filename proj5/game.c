@@ -2,7 +2,6 @@
 
 dungeon_t *dungeon;
 queue_t *turn;
-int print_time;
 uint8_t load, save, nummon, quit;
 int mon_index, mon_toggle;
 
@@ -21,27 +20,14 @@ void get_switches(int argc, char *argv[]){
   } 
 }
 
-void clear_turn_queue(){
+void free_turn_queue(){
   while(turn->first){
     dequeue(turn);
   }
   free(turn);
 }
 
-void draw_new(){
-  place_stairs(dungeon, STRS_UP);
-  place_stairs(dungeon, STRS_DOWN);
-  
-  dungeon->nummon = nummon;
-  print_time = TIME / nummon;
-  
-  /** path_find **/
-  init_characters(dungeon);
-  init_path(dungeon);
-  bfs(dungeon);
-  dijkstra(dungeon);
-  turn = init_turn_queue();
-}
+
 
 void init_game(int argc, char *argv[]){
   nummon = 10;
@@ -54,7 +40,18 @@ void init_game(int argc, char *argv[]){
     save_dungeon(dungeon);
   }
   
-  draw_new();
+  place_stairs(dungeon, STRS_UP);
+  place_stairs(dungeon, STRS_DOWN);
+  
+  dungeon->nummon = nummon;
+  
+  /** path_find **/
+  init_pc(dungeon);
+  init_monsters(dungeon);
+  init_path(dungeon);
+  bfs(dungeon);
+  dijkstra(dungeon);
+  turn = init_turn_queue();
 }
 
 int run_game(){
@@ -77,7 +74,7 @@ int run_game(){
     print_grid(dungeon);
     if(mon_toggle)
       print_mon_list();
-    usleep(print_time);
+    usleep(5000);
   }
   
   print_grid(dungeon);
@@ -88,9 +85,51 @@ int run_game(){
     getch();
   }
   else
-  clear_turn_queue();
+  free_turn_queue();
   free_dungeon(dungeon);
   return 0;
+}
+
+void draw_new(){
+  
+  //Redrawing dugeon
+  clear_rooms(dungeon);
+  
+  init_grid(dungeon);
+  init_rooms(dungeon);
+  
+  int valid = rooms_valid(dungeon);
+  while(!valid){
+    init_rooms(dungeon);
+    valid = rooms_valid(dungeon);
+  }
+
+  insert_rooms(dungeon);
+  insert_halls(dungeon);
+
+  place_stairs(dungeon, STRS_UP);
+  place_stairs(dungeon, STRS_DOWN);
+  
+  //Re-init pc
+  free(dungeon->pc->pos);
+
+  dungeon->pc->pos = rand_start(dungeon, PC);
+  dungeon->pc->turn = 0;
+  
+  //Recreating Monsters
+  while(turn->first){
+    dequeue(turn);
+  }
+  clear_monsters(dungeon);
+
+  init_monsters(dungeon);
+
+  int i;
+  for(i = 0; i < dungeon->nummon; i++){
+    character_t *m = dungeon->monsters[i];
+    enqueue(turn, m);
+  }
+  
 }
 
 int move_pc(){
@@ -98,83 +137,79 @@ int move_pc(){
   int c = getch();
   mvprintw(0, 23, "Key was pressed: %d\n", c);
   switch(c){
+  case '<':
+    if(dungeon->grid[pos->y][pos->x] == STRS_UP){
+      mvprintw(0, 40, "Trying stairs <\n");
+      draw_new();
+      mvprintw(0, 40, "Dungeon redrawn\n");
+    }
+    break;
+  case '>':
+    if(dungeon->grid[pos->y][pos->x] == STRS_DOWN){
+      mvprintw(0, 40, "Trying stairs <\n");
+      draw_new();
+      mvprintw(0, 40, "Dungeon redrawn\n");
+    }
+    break;
   
   case '1': case 'b':
-    if(!dungeon->hardness[pos->y+1][pos->x-1]){
+    if(!dungeon->hardness[pos->y+1][pos->x-1] && !mon_toggle){
       pos->y++;
       pos->x--;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
   case '2': case 'j':
-    if(!dungeon->hardness[pos->y+1][pos->x]){
+    if(!dungeon->hardness[pos->y+1][pos->x] && !mon_toggle){
       pos->y++;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
   case '3': case 'n':
-    if(!dungeon->hardness[pos->y+1][pos->x+1]){
+    if(!dungeon->hardness[pos->y+1][pos->x+1] && !mon_toggle){
       pos->y++;
       pos->x++;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
   case '4': case 'h':
-    if(!dungeon->hardness[pos->y][pos->x-1]){
+    if(!dungeon->hardness[pos->y][pos->x-1] && !mon_toggle){
       pos->x--;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;  
   case '5': case ' ':
-    dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    if(!mon_toggle){
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;  
   case '6': case 'l':
-    if(!dungeon->hardness[pos->y][pos->x+1]){
+    if(!dungeon->hardness[pos->y][pos->x+1] && !mon_toggle){
       pos->x++;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
   case '7': case 'y':
-    if(!dungeon->hardness[pos->y-1][pos->x-1]){
+    if(!dungeon->hardness[pos->y-1][pos->x-1] && !mon_toggle){
       pos->y--;
       pos->x--;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
   case '8': case 'k':
-    if(!dungeon->hardness[pos->y-1][pos->x]){
+    if(!dungeon->hardness[pos->y-1][pos->x] && !mon_toggle){
       pos->y--;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
   case '9': case 'u':
-    
-    if(!dungeon->hardness[pos->y-1][pos->x+1]){
+    if(!dungeon->hardness[pos->y-1][pos->x+1] && !mon_toggle){
       pos->y--;
       pos->x++;
       dungeon->pc->turn += 1000 / dungeon->pc->speed;
     }
     break;
-  case '<':
-    if(dungeon->grid[pos->y][pos->x] == STRS_UP){
-      clear_turn_queue();
-      mvprintw(23, 0, "Queue cleared");
-      free_dungeon(dungeon);
-      mvprintw(23, 0, "Dungeon cleared");
-      draw_new();
-      mvprintw(23, 0, "Dungeon redrawn");
-    }
-    break;
-  case '>':
-    if(dungeon->grid[pos->y][pos->x] == STRS_DOWN){
-      clear_turn_queue();
-      mvprintw(23, 0, "Queue cleared");
-      free_dungeon(dungeon);
-      mvprintw(23, 0, "Dungeon cleared");
-      draw_new();
-      mvprintw(23, 0, "Dungeon redrawn");
-    }
-    break;
+  
   case 'm':
     mon_toggle = 1;
     mon_index = 0;
@@ -191,8 +226,8 @@ int move_pc(){
   case 'Q':
     quit = 1;
     break;
-  //default:
-    //mvprintw(0, 23, "Key not recognized\n");
+  default:
+    mvprintw(0, 23, "Key not recognized\n");
   
   }
   

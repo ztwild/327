@@ -16,6 +16,8 @@ typedef struct dungeon_t{
   uint8_t nummon;
 }dungeon_t;
 
+/** Init functions **/
+
 pair_t *rand_start(dungeon_t *d, type_t t){
   uint8_t n;
   room_t *r;
@@ -45,8 +47,6 @@ void init_grid(dungeon_t *d){
   
 }
 
-
-
 void init_rooms(dungeon_t *d){
   int i;
   d->rooms = (room_t**)malloc(sizeof(room_t*) * ROOM_MIN);
@@ -62,10 +62,13 @@ void init_rooms(dungeon_t *d){
   d->room_count = i;
 }
 
-void init_characters(dungeon_t *d){
-  int i;
+void init_pc(dungeon_t *d){
   d->pc = create_pc();
   d->pc->pos = rand_start(d, PC);
+}
+
+void init_monsters(dungeon_t *d){
+  int i;
   d->monsters = (character_t**)malloc(sizeof(character_t*) * d->nummon);
   for(i = 0; i < d->nummon; i++){
     d->monsters[i] = create_monster(i+1);
@@ -83,12 +86,23 @@ void init_characters(dungeon_t *d){
   
 }
 
+/** Clear functions **/
+
 void clear_rooms(dungeon_t *d){
   int i;
   for(i = 0; i < d->room_count; i++){
     free(d->rooms[i]);
   }
   free(d->rooms);
+}
+
+void clear_monsters(dungeon_t *d){
+  int i;
+  for(i = 0; i < d->nummon; i++){
+    character_t *m = d->monsters[i];
+    free(m->pos);
+    free(m);
+  }
 }
 
 
