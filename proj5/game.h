@@ -26,6 +26,8 @@ int move_pc();
 
 int get_dir(int, int);
 
+void print_mon_list();
+
 int next_pos(character_t *);
 
 int cell_taken(int, int);

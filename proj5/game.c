@@ -4,6 +4,7 @@ dungeon_t *dungeon;
 queue_t *turn;
 int print_time;
 uint8_t load, save, nummon, quit;
+int mon_index, mon_toggle;
 
 void get_switches(int argc, char *argv[]){
   int i;
@@ -45,6 +46,8 @@ void draw_new(){
 void init_game(int argc, char *argv[]){
   nummon = 10;
   quit = 0;
+  mon_toggle = 0;
+  mon_index = 0;
   get_switches(argc, argv);
   dungeon = load ? load_dungeon() : new_dungeon();
   if(save){
@@ -55,7 +58,6 @@ void init_game(int argc, char *argv[]){
 }
 
 int run_game(){
-  
   
   print_grid(dungeon);
   while(!end_game()){
@@ -69,14 +71,17 @@ int run_game(){
     }
     else{
       next_pos(c);
+      c->turn += 1000 / c->speed;
     }
-    c->turn += 1000 / c->speed;
     enqueue_sort(turn, c, compare_characters);
     print_grid(dungeon);
+    if(mon_toggle)
+      print_mon_list();
     usleep(print_time);
   }
   
   print_grid(dungeon);
+  
     
   if(!dungeon->pc->alive){
     mvprintw(22, 0, "!!!!!Player is Dead!!!!!  press key to exit\n");
@@ -91,62 +96,66 @@ int run_game(){
 int move_pc(){
   pair_t *pos = dungeon->pc->pos;
   int c = getch();
+  mvprintw(0, 23, "Key was pressed: %d\n", c);
   switch(c){
-  case KEY_UP:
-    mvprintw(0, 23, "Key was pressed: UP\n", c);
-    break;
-  case KEY_DOWN:
-    mvprintw(0, 23, "Key was pressed: DOWN\n", c);
-    break;
+  
   case '1': case 'b':
-    mvprintw(0, 23, "Key was pressed: 1\n", c);
-    if(!dungeon->hardness[pos->y+1][pos->x-1])
+    if(!dungeon->hardness[pos->y+1][pos->x-1]){
       pos->y++;
       pos->x--;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '2': case 'j':
-    mvprintw(0, 23, "Key was pressed: 2\n", c);
-    if(!dungeon->hardness[pos->y+1][pos->x])
+    if(!dungeon->hardness[pos->y+1][pos->x]){
       pos->y++;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '3': case 'n':
-    mvprintw(0, 23, "Key was pressed: 3\n", c);
-    if(!dungeon->hardness[pos->y+1][pos->x+1])
+    if(!dungeon->hardness[pos->y+1][pos->x+1]){
       pos->y++;
       pos->x++;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '4': case 'h':
-    mvprintw(0, 23, "Key was pressed: 4\n", c);
-    if(!dungeon->hardness[pos->y][pos->x-1])
+    if(!dungeon->hardness[pos->y][pos->x-1]){
       pos->x--;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;  
   case '5': case ' ':
-    mvprintw(0, 23, "Key was pressed: 5\n", c);
+    dungeon->pc->turn += 1000 / dungeon->pc->speed;
     break;  
   case '6': case 'l':
-    mvprintw(0, 23, "Key was pressed: 6\n", c);
-    if(!dungeon->hardness[pos->y][pos->x+1])
+    if(!dungeon->hardness[pos->y][pos->x+1]){
       pos->x++;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '7': case 'y':
-    mvprintw(0, 23, "Key was pressed: 7\n", c);
-    if(!dungeon->hardness[pos->y-1][pos->x-1])
+    if(!dungeon->hardness[pos->y-1][pos->x-1]){
       pos->y--;
       pos->x--;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '8': case 'k':
-    mvprintw(0, 23, "Key was pressed: 8\n", c);
-    if(!dungeon->hardness[pos->y-1][pos->x])
+    if(!dungeon->hardness[pos->y-1][pos->x]){
       pos->y--;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '9': case 'u':
-    mvprintw(0, 23, "Key was pressed: 9\n", c);
-    if(!dungeon->hardness[pos->y-1][pos->x+1])
+    
+    if(!dungeon->hardness[pos->y-1][pos->x+1]){
       pos->y--;
       pos->x++;
+      dungeon->pc->turn += 1000 / dungeon->pc->speed;
+    }
     break;
   case '<':
-    mvprintw(0, 23, "Key was pressed: <\n", c);
     if(dungeon->grid[pos->y][pos->x] == STRS_UP){
       clear_turn_queue();
       mvprintw(23, 0, "Queue cleared");
@@ -157,7 +166,6 @@ int move_pc(){
     }
     break;
   case '>':
-    mvprintw(0, 23, "Key was pressed: >\n", c);
     if(dungeon->grid[pos->y][pos->x] == STRS_DOWN){
       clear_turn_queue();
       mvprintw(23, 0, "Queue cleared");
@@ -168,13 +176,23 @@ int move_pc(){
     }
     break;
   case 'm':
-    mvprintw(0, 23, "Key was pressed: m\n", c);
+    mon_toggle = 1;
+    mon_index = 0;
+    break;
+  case KEY_UP:
+    mon_index--;
+    break;
+  case KEY_DOWN:
+    mon_index++;
+    break;
+  case 27:
+    mon_toggle = 0;
     break;
   case 'Q':
     quit = 1;
     break;
-  default:
-    mvprintw(0, 23, "Key not recognized\n");
+  //default:
+    //mvprintw(0, 23, "Key not recognized\n");
   
   }
   
@@ -189,6 +207,28 @@ int move_pc(){
   }
   
   return 0;
+}
+
+void print_mon_list(){
+  int i, len;
+  character_t *pc = dungeon->pc;
+
+  mon_index = mon_index >= dungeon->nummon ? 
+      dungeon->nummon - 1 : 
+      mon_index < 0 ? 0 : mon_index;
+  len = min(8 + mon_index, dungeon->nummon);
+  
+  for(i = mon_index; i < len; i++){
+    character_t *mon = dungeon->monsters[i];
+    int i_vert = mon->pos->y - pc->pos->y;
+    int i_horz = mon->pos->x - pc->pos->x;
+    char *c_vert = i_vert > 0 ? "South" : "North";
+    char *c_horz = i_horz > 0 ? "East" : "West";
+    char type = mon->attr > 9 ? (mon->attr - 10) + 'a' : mon->attr + '0';
+    
+    mvprintw(8+(i - mon_index), 22, "Monster %c, %2d %s and %2d %s", 
+          type, abs(i_vert), c_vert, abs(i_horz), c_horz);
+  }
 }
 
 int get_dir(int des, int init){
