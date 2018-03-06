@@ -27,3 +27,4 @@ assignment 1.04
 02/19/18: Prints monsters and their position
 02/20/18: Made priority with general sort
 02/20/18: Moves monster according to their attribute, and end after palyer death
+02/20/18: Player moves and attacks, tunnelling works

@@ -72,7 +72,7 @@ int compare_characters(const void *c1, const void *c2){
   
   int turn = char1->turn < char2->turn;
   int time = char1->turn == char2->turn && char1->time < char2->time;
-  return turn || time;
+  return char1->alive && (turn || time);
 }
 
 

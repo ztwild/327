@@ -176,7 +176,7 @@ void print_grid(dungeon_t *d){
       
       for(i = 0; i < d->nummon; i++){
         character_t *m = d->monsters[i];
-        if(m->pos->x == x && m->pos->y == y){
+        if(m->alive && m->pos->x == x && m->pos->y == y){
           c = m->attr > 9 ? (m->attr - 10) + 'a' : m->attr + '0';
         }
       }

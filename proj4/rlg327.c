@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ncurses.h>
 #include "game.c"
 
 
@@ -16,13 +17,19 @@ void get_switches(int, char*[]);
 int main(int argc, char *argv[]){
   srand(time(NULL));
   nummon = 10;
-  
   get_switches(argc, argv);
+  
+  /** initialize ncurses **/
+  initsrc();
+  noecho();
+  
+
   init_game(load, nummon);
   
   run_game(save);
-  //print_test();
-	
+
+  endwin();
+  	
   return 0;
 }
 
