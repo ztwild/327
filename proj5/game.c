@@ -56,35 +56,31 @@ void init_game(int argc, char *argv[]){
 
 int run_game(){
   
-  print_grid(dungeon);
+  //print_grid(dungeon);
   while(!end_game()){
     character_t *c = (character_t*)dequeue(turn);
     
     if(c->type == PC){
+      print_grid(dungeon);
+      if(mon_toggle) { print_mon_list(); }
       move_pc();
       init_path(dungeon);
       bfs(dungeon);
       dijkstra(dungeon);
+      //print_grid(dungeon);
     }
     else{
       next_pos(c);
       c->turn += 1000 / c->speed;
     }
     enqueue_sort(turn, c, compare_characters);
-    print_grid(dungeon);
-    if(mon_toggle)
-      print_mon_list();
-    usleep(5000);
   }
   
   print_grid(dungeon);
   
-    
-  if(!dungeon->pc->alive){
-    mvprintw(22, 0, "!!!!!Player is Dead!!!!!  press key to exit\n");
-    getch();
-  }
-  else
+  char *mess = !dungeon->pc->alive ? "Player is Dead" : "You Win";
+  mvprintw(22, 0, "!!!!!%s!!!!! press any key to exit\n", mess); 
+  getch();
   free_turn_queue();
   free_dungeon(dungeon);
   return 0;
@@ -139,16 +135,12 @@ int move_pc(){
   switch(c){
   case '<':
     if(dungeon->grid[pos->y][pos->x] == STRS_UP){
-      mvprintw(0, 40, "Trying stairs <\n");
       draw_new();
-      mvprintw(0, 40, "Dungeon redrawn\n");
     }
     break;
   case '>':
     if(dungeon->grid[pos->y][pos->x] == STRS_DOWN){
-      mvprintw(0, 40, "Trying stairs <\n");
       draw_new();
-      mvprintw(0, 40, "Dungeon redrawn\n");
     }
     break;
   
@@ -278,7 +270,7 @@ int get_dir(int des, int init){
 
 int next_pos(character_t *c){
   int i, j, move;
-  uint8_t x, y, hard;
+  int x, y, hard;
   pair_t *pc_pos = dungeon->pc->pos;
   
   if(!c->alive){
@@ -298,10 +290,12 @@ int next_pos(character_t *c){
   }
   else if(c->attr & 0x01){  //Intelligent
     uint8_t cheapest = 255;
+    x = c->pos->x;
+    y = c->pos->y;
     for(i = -1; i < 2; i++){
       for(j = -1; j < 2; j++){
-        uint8_t temp_x = c->pos->x + i;
-        uint8_t temp_y = c->pos->y + j;
+        int temp_x = c->pos->x + i;
+        int temp_y = c->pos->y + j;
         uint8_t path = c->attr & 0x04 ? 
             dungeon->wall[temp_y][temp_x] : dungeon->open[temp_y][temp_x];
         if(path < cheapest){
@@ -323,6 +317,8 @@ int next_pos(character_t *c){
   if(dungeon->pc->pos->x == x && dungeon->pc->pos->y == y){
     dungeon->pc->alive = 0;
   }
+  
+  
   else if(move && dungeon->grid[y][x] == WALL){
     if(dungeon->hardness[y][x] <= 85){
       dungeon->hardness[y][x] = 0;
@@ -338,6 +334,8 @@ int next_pos(character_t *c){
     }
     
   }
+  
+  
   if(move){
     c->pos->x = x;
     c->pos->y = y;

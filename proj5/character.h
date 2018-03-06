@@ -14,7 +14,7 @@ typedef enum char_type{
 
 typedef struct pair pair_t;
 
-pair_t *create_pair(int, int);
+pair_t *create_pair(uint8_t, uint8_t);
 
 typedef struct character character_t;
 

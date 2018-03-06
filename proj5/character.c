@@ -5,7 +5,7 @@ typedef struct pair{
   uint8_t y;
 }pair_t;
 
-pair_t *create_pair(int x, int y){
+pair_t *create_pair(uint8_t x, uint8_t y){
   pair_t *p = (pair_t*)malloc(sizeof(pair_t));
   p->x = x;
   p->y = y;
@@ -45,6 +45,7 @@ character_t *create_monster(uint32_t time){
   char I = rand() % 2;
   char T = rand() % 2;
   char A = rand() % 2;
+  //char A = 0;
   char E = rand() % 2;
   //printf("E: %d, A: %d, T: %d, I: %d\n", E, A, T, I);
   m->attr = I;

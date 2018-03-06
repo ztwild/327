@@ -74,8 +74,8 @@ void init_monsters(dungeon_t *d){
     d->monsters[i] = create_monster(i+1);
     pair_t *pos;
     if(d->monsters[i]->attr & 0x04){ //Tunneling ability
-      int x = (rand() % X_LENGTH - 2) + 1;
-      int y = (rand() % Y_LENGTH - 2) + 1;
+      uint8_t x = (rand() % (X_LENGTH - 2)) + 1;
+      uint8_t y = (rand() % (Y_LENGTH - 2)) + 1;
       pos = create_pair(x, y);
     }
     else{

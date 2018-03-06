@@ -23,7 +23,6 @@ typedef enum grid_t{
 
 typedef struct dungeon_t dungeon_t;
 
-pair_t *create_pair(int, int);
 
 pair_t *rand_start(dungeon_t *, type_t);
 
