@@ -63,15 +63,13 @@ int run_game(){
     character_t *c = (character_t*)dequeue(turn);
     
     if(c->type == PC){
-      /**
       if(fog_toggle){
         update_memory(dungeon);
         print_memory(dungeon);
       }
       else{
-      **/
         print_grid(dungeon);
-      //}
+      }
       
       if(mon_toggle) { print_mon_list(); }
       if(tele_toggle) { mvprintw(tele_cur->y + 1, tele_cur->x, "*"); }
