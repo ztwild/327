@@ -35,5 +35,8 @@ assignment 1.05
 03/01/18: Prints & traverse monster list info
 03/01/18: Can traverse stairs and redraw dungeon
 
-
+assignment 1.06
+03/16/18: Started assignment, added teleportation
+03/16/18: Added random teleporation, and fog toggle
+03/17/18: Converted to cpp files
 

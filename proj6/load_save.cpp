@@ -1,17 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <endian.h>
-#include <string.h>
-#include <unistd.h>
-#include "utils.c"
-
-#define FILE_PATH "/.rlg327/dungeon"
-#define SEMANTIC "RLG327-S2018"
+#include "load_save.h"
 
 char *get_path(){
   int length = strlen(getenv("HOME")) + strlen(FILE_PATH) + 1;
-  char *p = malloc(sizeof(char) * length);
+  char *p = (char*)malloc(sizeof(char) * length);
   strcpy(p, getenv("HOME"));
   strcat(p, FILE_PATH);
   return p;
@@ -21,7 +12,7 @@ char *get_path(){
 dungeon_t *load_dungeon(){
   int i;
   uint32_t version, size, little_endian;
-  char *semantic = malloc(sizeof(char) * 12);
+  char *semantic = (char*)malloc(sizeof(char) * 12);
   
   char *file_path = get_path();
   

@@ -42,6 +42,7 @@ void init_grid(dungeon_t *d){
       else if(x == (X_LENGTH - 1) || y == (Y_LENGTH - 1)){
         d->hardness[y][x] = 255;
       }
+      d->memory[y][x] = ' ';
       d->grid[y][x] = WALL;
     }
   }
@@ -274,7 +275,7 @@ void free_dungeon(dungeon_t *d){
  free(d);
 }
 
-void place_stairs(dungeon_t *d, type_t type){
+void place_stairs(dungeon_t *d, grid_t type){
   int x = 0, y = 0;
   while(d->grid[y][x] != ROOM && d->grid[y][x] != HALL){
     x = rand() % X_LENGTH;
@@ -333,9 +334,9 @@ static int smooth_hardness(dungeon_t *d)
     } while (hardness[y][x]);
     hardness[y][x] = i;
     if (i == 1) {
-      head = tail = malloc(sizeof (*tail));
+      head = tail = (queue_node_t*)malloc(sizeof (*tail));
     } else {
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
     }
     tail->next = NULL;
@@ -356,7 +357,7 @@ static int smooth_hardness(dungeon_t *d)
 
     if (x - 1 >= 0 && y - 1 >= 0 && !hardness[y - 1][x - 1]) {
       hardness[y - 1][x - 1] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x - 1;
@@ -364,7 +365,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (x - 1 >= 0 && !hardness[y][x - 1]) {
       hardness[y][x - 1] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x - 1;
@@ -372,7 +373,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (x - 1 >= 0 && y + 1 < Y_LENGTH && !hardness[y + 1][x - 1]) {
       hardness[y + 1][x - 1] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x - 1;
@@ -380,7 +381,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (y - 1 >= 0 && !hardness[y - 1][x]) {
       hardness[y - 1][x] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x;
@@ -388,7 +389,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (y + 1 < Y_LENGTH && !hardness[y + 1][x]) {
       hardness[y + 1][x] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x;
@@ -396,7 +397,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (x + 1 < X_LENGTH && y - 1 >= 0 && !hardness[y - 1][x + 1]) {
       hardness[y - 1][x + 1] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x + 1;
@@ -404,7 +405,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (x + 1 < X_LENGTH && !hardness[y][x + 1]) {
       hardness[y][x + 1] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x + 1;
@@ -412,7 +413,7 @@ static int smooth_hardness(dungeon_t *d)
     }
     if (x + 1 < X_LENGTH && y + 1 < Y_LENGTH && !hardness[y + 1][x + 1]) {
       hardness[y + 1][x + 1] = i;
-      tail->next = malloc(sizeof (*tail));
+      tail->next = (queue_node*)malloc(sizeof (*tail));
       tail = tail->next;
       tail->next = NULL;
       tail->x = x + 1;

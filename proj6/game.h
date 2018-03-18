@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "queue.c"
-#include "dungeon.c"
-#include "load_save.c"
-#include "path_find.c"
+#include "queue.cpp"
+#include "dungeon.cpp"
+#include "load_save.cpp"
+#include "path_find.cpp"
 
 #define TIME 500000
 #define SAVE "--save"

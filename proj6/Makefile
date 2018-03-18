@@ -1,12 +1,12 @@
 LDFLAGS = -lncurses
 
-rlg327: rlg327.c character.c game.c queue.c
-	gcc -Wall -o $@ rlg327.c $(LDFLAGS)
+rlg327: rlg327.cpp character.cpp game.cpp queue.cpp
+	g++ -Wall -o $@ rlg327.cpp $(LDFLAGS)
 
 clean:
 	rm -f *.o rlg327 *.pgm
 
 open: 
-	gedit rlg327.c game.c game.h Makefile &
+	gedit rlg327.cpp game.cpp game.h Makefile &
 
 

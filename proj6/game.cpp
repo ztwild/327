@@ -87,7 +87,7 @@ int run_game(){
   
   print_grid(dungeon);
   
-  char *mess = !dungeon->pc->alive ? "Player is Dead" : "You Win";
+  const char *mess = !dungeon->pc->alive ? "Player is Dead" : "You Win";
   mvprintw(22, 0, "!!!!!%s!!!!! press any key to exit\n", mess); 
   getch();
   free_turn_queue();
@@ -313,8 +313,8 @@ void print_mon_list(){
     character_t *mon = dungeon->monsters[i];
     int i_vert = mon->pos->y - pc->pos->y;
     int i_horz = mon->pos->x - pc->pos->x;
-    char *c_vert = i_vert > 0 ? "South" : "North";
-    char *c_horz = i_horz > 0 ? "East" : "West";
+    const char *c_vert = i_vert > 0 ? "South" : "North";
+    const char *c_horz = i_horz > 0 ? "East" : "West";
     char type = mon->attr > 9 ? (mon->attr - 10) + 'a' : mon->attr + '0';
     
     mvprintw(8+(i - mon_index), 22, "Monster %c, %2d %s and %2d %s", 

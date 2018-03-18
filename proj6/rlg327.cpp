@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ncurses.h>
-#include "game.c"
-
-#define MAX 100
+#include "rlg327.h"
 
 int main(int argc, char *argv[]){
   srand(time(NULL));

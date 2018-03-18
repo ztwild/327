@@ -6,8 +6,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
-#include "room.c"
-#include "character.c"
+#include "room.cpp"
+#include "character.cpp"
 
 #define HARDNESS 255
 #define ROOM_MIN 5
