@@ -1,12 +1,5 @@
 #include "room.h"
 
-typedef struct room_t{
- uint8_t pos_y;
- uint8_t pos_x;
- uint8_t size_y;
- uint8_t size_x;
-}room_t;
-
 room_t *create_room(){
   room_t *r = (room_t*)malloc(sizeof(room_t));
   // r->size_x = (rand() % (X_LENGTH - X_MIN)) + X_MIN;

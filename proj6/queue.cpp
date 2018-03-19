@@ -1,13 +1,4 @@
-
-typedef struct node{
-  void *value;
-  struct node *next;
-}node_t;
-
-typedef struct queue{
-  int size;
-  node_t *first;
-}queue_t;
+#include "queue.h"
 
 node_t *create_node(void *v){
   node_t *n = (node_t*)malloc(sizeof(node_t));

@@ -1,10 +1,5 @@
 #include "character.h"
 
-typedef struct pair{
-  uint8_t x;
-  uint8_t y;
-}pair_t;
-
 pair_t *create_pair(uint8_t x, uint8_t y){
   pair_t *p = (pair_t*)malloc(sizeof(pair_t));
   p->x = x;
@@ -18,17 +13,6 @@ pair_t *copy_pos(pair_t *p){
   copy->y = p->y;
   return copy;
 }
-
-typedef struct character{
-  type_t type;
-  uint8_t alive;
-  uint32_t turn;
-  uint32_t health;
-  uint8_t speed;
-  pair_t *pos;
-  uint32_t time;
-  char attr;
-}character_t;
 
 character_t *create_pc(){
   character_t *pc = (character_t*)malloc(sizeof(character_t));

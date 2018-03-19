@@ -12,11 +12,18 @@
 #define Y_LENGTH 21
 #define MAX_LENGTH 12
 
-typedef struct room_t room_t;
+class room_t{
+ public:
+   uint8_t pos_y;
+   uint8_t pos_x;
+   uint8_t size_y;
+   uint8_t size_x;
+   
+   room_t *create_room();
+   int rooms_intersect(room_t *, room_t *);
+};
 
-room_t *create_room();
 
-int rooms_intersect(room_t *, room_t *);
 
 #endif
 

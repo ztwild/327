@@ -2,20 +2,7 @@
 
 
 
-typedef struct dungeon_t{
-  uint8_t hardness[Y_LENGTH][X_LENGTH];
-  grid_t grid[Y_LENGTH][X_LENGTH];
-  char memory[Y_LENGTH][X_LENGTH];
-  room_t **rooms;
-  uint8_t room_count;
-  
-  uint8_t open[Y_LENGTH][X_LENGTH];
-  uint8_t wall[Y_LENGTH][X_LENGTH];
-  character_t *pc;
-  
-  character_t **monsters;
-  uint8_t nummon;
-}dungeon_t;
+
 
 /** Init functions **/
 
