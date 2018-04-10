@@ -1,0 +1,57 @@
+assignment 1.01
+01/17/18: Created structs for dungeons and rooms
+01/19/18: Radomly generate rooms, position, and size
+01/20/18: finished randomly generated rooms without intersecting
+01/20/18: finished hallway generation
+
+assignment 1.02
+01/24/18: Starting assignment
+01/28/18: Saves bianry file fo the dungeon
+01/28/18: Reads the binary file but is slightly off
+01/29/18: Flip-Flopped the demensions of the hardness in dungeon
+01/29/18: changed main.c to rlg327.c
+01/29/18: Examples given read correctly
+01/29/18: Saves and reloads correctly
+01/29/18: Gets the full path name
+
+assignment 1.03
+02/02/18: Created & finished bfs for pathes in open areas
+02/02/18: Created queue.c, and started dijkstras algorithm
+02/02/18: Used the smooth_hardness funtion from solution 1.01
+02/03/18: Finished dijkstras, needs more testing
+02/05/18: Fixed the save/load file path for .rlg327 dir
+02/12/18: Changed Dikjstras
+
+assignment 1.04
+02/19/18: Started assignment, creates monsters and uses nummon switch
+02/19/18: Prints monsters and their position
+02/20/18: Made priority with general sort
+02/20/18: Moves monster according to their attribute, and end after palyer death
+02/20/18: Player moves and attacks, tunnelling works
+
+assignment 1.05
+02/24/18: started assignment, initialized ncurses in assignment
+02/24/18: Grid printing works, pc can move and attack monsters, can quit
+03/01/18: Prints & traverse monster list info
+03/01/18: Can traverse stairs and redraw dungeon
+
+assignment 1.06
+03/16/18: Started assignment, added teleportation
+03/16/18: Added random teleporation, and fog toggle
+03/17/18: Converted to cpp files
+
+assignment 1.07
+03/23/18: Started assignment
+03/23/18: made monster_desc class and working on flex and bison
+03/24/18: Abandonded flex and bison, wasnt working with c++
+03/25/18: Started parsingalgorithm
+
+assignment 1.08
+03/30/18: Started assignment and using prof prev solution
+04/01/18: Loaded monster description into monster heap
+04/01/18: Printing monsters and colors
+04/01/18: Loaded objects into object map
+04/01/18: Printing objects
+
+
+
