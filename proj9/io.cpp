@@ -876,7 +876,7 @@ void look_at_monster(dungeon *d){
       c = charpair(cur);
       if (c && c != d->PC &&
             can_see(d, character_get_pos(d->PC),character_get_pos(c), 1, 0)) {
-          io_display(d);
+          clear();
           n = (npc*)d->character_map[cur[dim_y]][cur[dim_x]];
           mvprintw(5, 25, "monster");
           mvprintw(6, 0, "%s", n->description);
@@ -914,25 +914,29 @@ void io_handle_input(dungeon *d)
     } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));
     fog_off = 0;
     switch (key = getch()) {
-    
-    case 'w':
-      carry_list(d, WEAR);
+    case 'L':
+      look_at_monster(d);
+      fail_code = 1;
+      break;
+      
+    case 'i':
+      carry_list(d, LIST);
+      fail_code = 1;
+      break;
+    case 'I':
+      carry_list(d, DESC);
       fail_code = 1;
       break;
     case 'd':
       carry_list(d, DROP);
       fail_code = 1;
       break;
-    case 'i':
-      carry_list(d, LIST);
+    case 'w':
+      carry_list(d, WEAR);
       fail_code = 1;
       break;
     case 'X':
       carry_list(d, EXPUNGE);
-      fail_code = 1;
-      break;
-    case 'I':
-      carry_list(d, DESC);
       fail_code = 1;
       break;
     
@@ -942,13 +946,6 @@ void io_handle_input(dungeon *d)
       break;
     case 'e':
       equip_list(d, LIST);
-      fail_code = 1;
-      break;
-    
-    
-    
-    case 'L':
-      look_at_monster(d);
       fail_code = 1;
       break;
     
@@ -1029,6 +1026,7 @@ void io_handle_input(dungeon *d)
       io_display(d);
       fail_code = 1;
       break;
+    
     case 'g':
       /* Teleport the PC to a random place in the dungeon.              */
       io_teleport_pc(d);

@@ -40,6 +40,3 @@ clobber: clean
 etags:
 	@$(ECHO) Updating TAGS
 	@etags *.[ch]
-
-open:
-	gedit Makefile character.cpp pc.cpp npc.cpp object.cpp &

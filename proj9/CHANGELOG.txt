@@ -53,5 +53,16 @@ assignment 1.08
 04/01/18: Loaded objects into object map
 04/01/18: Printing objects
 
+assignment 1.09
+04/09/18: Started assignment
+04/09/18: Pick up items, list carried items, and show item description
+04/09/18: wear items adn update PC speed
+04/09/18: Combat damage updated and npcs dont attack each other
+04/09/18: Take off items adn drop items
+04/10/18: Look at monster descriptions
+04/10/18: Expunge items from  game
+
+
+
 
 

@@ -21,9 +21,6 @@ class object {
  public:
   object(object_description &o, pair_t p, object *next);
   ~object();
-  inline const char *get_description() {
-    return description.c_str();
-  }
   inline int32_t get_damage_base() const
   {
     return damage.get_base();
@@ -39,6 +36,7 @@ class object {
   char get_symbol();
   uint32_t get_color();
   const char *get_name();
+  const char *get_description();
   int32_t get_speed();
   int32_t roll_dice();
   int32_t get_type();

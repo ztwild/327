@@ -12,6 +12,15 @@
 
 using namespace std;
 
+void update_pc(dungeon *d){
+  int i;
+  d->PC->speed = PC_SPEED;
+  for(i = 0; i < EQUIP_NUM; i++){
+    object *obj = d->PC->equip[i];
+    if(obj){ d->PC->speed += obj->get_speed(); }
+  }
+}
+
 bool pickup_object(dungeon *d, pair_t p){
   int i = 0;
   object *obj = objpair(p);
@@ -27,10 +36,10 @@ bool pickup_object(dungeon *d, pair_t p){
   return false;
 }
 
-
 /** PC Carry List **/
 void display_carry(dungeon *d){
   uint32_t i;
+  clear();
   for(i = 0; i < CARRY_NUM; i++){
     mvprintw(6+i, 20, "%d  ", i);
     if(d->PC->carry[i]){
@@ -46,31 +55,42 @@ void display_carry(dungeon *d){
   mvprintw(6+i, 20, "Press ESC to exit");
 }
 
+void description_item(uint32_t index, dungeon *d){
+  clear();
+  object *obj = d->PC->carry[index];
+  mvprintw(5, 25, "%s", obj->get_name());
+  if(obj){
+    mvprintw(6, 0, "%s", obj->get_description());
+  }
+  getch();
+}
+
+void drop_item(uint32_t index, dungeon *d){
+  object* obj = d->PC->carry[index];
+  if(obj){
+    d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] = obj;
+    d->PC->carry[index] = NULL;
+  }
+}
+
 void wear_item(uint32_t index, dungeon *d){
   uint32_t i;
-  if(d->PC->carry[index]){
-    i = d->PC->carry[index]->get_type() - 1;
+  object* obj = d->PC->carry[index]; 
+  if(obj){
+    i = obj->get_type() - 1;
     if(!d->PC->equip[i]){
-      d->PC->equip[i] = d->PC->carry[index];
+      d->PC->equip[i] = obj;
       d->PC->carry[index] = NULL;
     }
     else if(i == 10 && !d->PC->equip[i+1]){
-      d->PC->equip[i+1] = d->PC->carry[index];
+      d->PC->equip[i+1] = obj;
       d->PC->carry[index] = NULL;
     }
     else{
       object *temp = d->PC->equip[i];
-      d->PC->equip[i] = d->PC->carry[index];
+      d->PC->equip[i] = obj;
       d->PC->carry[index] = temp;
     }
-  }
-}
-
-void drop_item(uint32_t index, dungeon *d){
-  if(d->PC->carry[index]){
-    object *obj = d->PC->carry[index];
-    d->objmap[d->PC->position[dim_y]][d->PC->position[dim_x]] = obj;
-    d->PC->carry[index] = NULL;
   }
 }
 
@@ -122,31 +142,16 @@ void expunge_item(uint32_t index, dungeon *d){
       }
     }
     //traverse vector
-    /**
-    vector<object_description> &v = d->object_descriptions->be;
+    vector<object_description> &v = d->object_descriptions;
     for(i = 0; i < v.size(); i++){
       if(compare_objects(obj, &v[i])){
         mvprintw(30, 30, "removed %s", v[i].get_name());
         v.erase(v.begin() + i);
       }
     }
-    **/
     
     delete obj;
   }
-}
-
-void description_item(uint32_t index, dungeon *d){
-  object *obj = d->PC->carry[index];
-  io_display(d);
-  mvprintw(5, 25, "%s", obj->get_name());
-  if(obj){
-    //char buff[50];
-    int i = 0;
-    const char *desc = obj->get_description();
-    mvprintw(6+i, 0, "%s", desc);
-  }
-  getch();
 }
 
 void carry_list(dungeon *d, item_action ia){
@@ -161,20 +166,19 @@ void carry_list(dungeon *d, item_action ia){
       i = sym - '0';
       switch(ia){
       case LIST:
-        mvprintw(5, 25, "CARRY LIST");
         break;
       case DROP:
-        mvprintw(5, 25, "DROP AN ITEM");
         drop_item(i, d);
+        break;
       case WEAR:
-        mvprintw(5, 25, "WEAR AN ITEM");
         wear_item(i, d);
+        break;
       case EXPUNGE:
-        mvprintw(5, 25, "EXPUNGE ITEM FROM GAME");
         expunge_item(i, d);
+        break;
       case DESC:
-        mvprintw(5, 25, "DESC OF ITEM");
         description_item(i, d);
+        break;
       default:
         break;
       }
@@ -183,14 +187,14 @@ void carry_list(dungeon *d, item_action ia){
       fail_code = 0;
     }
     
-    io_display(d);
   }while(fail_code);
-  
+  update_pc(d);
   io_display(d);
 }
 
 /** PC Equip List **/
 void display_equip(dungeon *d){
+  clear();
   uint32_t i;
   string equip_index = "abcdefghijkl";
   for(i = 0; i < EQUIP_NUM; i++){
@@ -237,11 +241,10 @@ void equip_list(dungeon *d, item_action ia){
       i = sym - 'a';
       switch(ia){
       case LIST:
-        mvprintw(5, 25, "EQUIPMENT LIST");
         break;
       case REMOVE:
-        mvprintw(5, 25, "TAKE OFF AN ITEM");
         remove_item(i, d);
+        break;
       default:
         break;
       }
@@ -250,9 +253,9 @@ void equip_list(dungeon *d, item_action ia){
       fail_code = 0;
     }
     
-    io_display(d);
+    
   }while(fail_code);
-  
+  update_pc(d);
   io_display(d);
 }
 
@@ -281,7 +284,6 @@ void place_pc(dungeon_t *d)
 void config_pc(dungeon_t *d)
 {
   static dice pc_dice(0, 1, 4);
-  uint32_t i;
 
   d->PC = new pc;
 
@@ -296,6 +298,8 @@ void config_pc(dungeon_t *d)
   d->PC->color.push_back(COLOR_WHITE);
   d->PC->damage = &pc_dice;
   d->PC->name = "Isabella Garcia-Shapiro";
+  
+  int i = 0;
   for(i = 0; i < CARRY_NUM; i++){ d->PC->carry[i] = NULL; }
   for(i = 0; i < EQUIP_NUM; i++){ d->PC->equip[i] = NULL; }
 

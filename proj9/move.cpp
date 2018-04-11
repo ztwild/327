@@ -15,6 +15,7 @@
 #include "event.h"
 #include "io.h"
 #include "npc.h"
+#include "object.h"
 
 void do_combat(dungeon *d, character *atk, character *def)
 {
@@ -29,21 +30,27 @@ void do_combat(dungeon *d, character *atk, character *def)
     "ear",    "subcutaneous tissue",  "cerebellum", "hippocampus",
     "frontal lobe", "brain",
   };
-  int part;
+  
   uint32_t attack = atk->damage->roll();
-  if(attack < def->hp){
-    def->hp -= attack;
-    return;
+  int i;
+  if(d->PC == atk){
+    attack = d->PC->equip[0] ? 
+      d->PC->equip[0]->roll_dice() :
+      attack;
+    for(i = 1; i < EQUIP_NUM; i++){
+      if(d->PC->equip[i]) attack += d->PC->equip[i]->roll_dice();
+    }
   }
   def->hp = 0;
   
+  
+  int part;
   if (def->alive) {
     def->alive = 0;
     charpair(def->position) = NULL;
     
     if (def != d->PC) {
       d->num_monsters--;
-      io_queue_message("You smite %s%s!", is_unique(def) ? "" : "the ", def->name);
     } else {
       if ((part = rand() % (sizeof (organs) / sizeof (organs[0]))) < 26) {
         io_queue_message("As %s%s eats your %s,", is_unique(atk) ? "" : "the ",
@@ -67,6 +74,10 @@ void do_combat(dungeon *d, character *atk, character *def)
     atk->kills[kill_direct]++;
     atk->kills[kill_avenged] += (def->kills[kill_direct] +
                                   def->kills[kill_avenged]);
+  }
+
+  if (atk == d->PC) {
+    io_queue_message("You smite %s%s!", is_unique(def) ? "" : "the ", def->name);
   }
 
   can_see_atk = can_see(d, character_get_pos(d->PC),
@@ -99,9 +110,7 @@ void move_character(dungeon *d, character *c, pair_t next)
       ((next[dim_y] != c->position[dim_y]) ||
        (next[dim_x] != c->position[dim_x]))) {
     do_combat(d, c, charpair(next));
-  } 
-  
-  else {
+  } else {
     /* No character in new position. */
 
     d->character_map[c->position[dim_y]][c->position[dim_x]] = NULL;
