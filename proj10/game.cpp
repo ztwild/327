@@ -25,9 +25,21 @@ void init_game(){
   io_init_terminal();
 }
 
+void update_game(){
+  character *c = (character*)e->q->dequeue();
+  while(c != e->PC){
+    
+    e->q->enqueue((void*)c);
+  }
+  if(c == e->PC){
+    if(e->PC->jump > 0){
+      
+    }
+  }
+}
+
 void start_game(){
   int key, fail_code = 1;
-  
   
   do{
     print_screen(e);
@@ -42,10 +54,13 @@ void start_game(){
       case 'Q':
         fail_code = 0;
         break;
-        
-        
+      case ' ':
+        handle_jump(e);
+        break;
     }
     
+    
+    gravity_update(e);
   }
   while(fail_code);
   

@@ -1,22 +1,31 @@
 
-class node_t{
+class node{
   public:
     void *value;
-    node_t *next;
-    
-    node_t *create_node(void *v);
+    node *next;
+    node(void *v){
+      value = v;
+      next = NULL;
+    }
+    ~node(){
+      delete next;
+    }
 };
 
-class queue_t{
+class queue{
   public:
     int size;
-    node_t *first;
-    
-    queue_t *init_queue();
-    void enqueue(queue_t *, void *);
-    void enqueue_sort(queue_t *, void *, 
-                          int(*comp)(const void *, const void *));
-    void *dequeue(queue_t *);
+    node *first;
+    queue(){
+      size = 0;
+      first = NULL;
+    }
+    ~queue(){
+      delete first;
+    }
+    void enqueue(void *);
+    //void enqueue_sort(void *, int(*comp)(const void *, const void *));
+    void *dequeue();
 };
 
 

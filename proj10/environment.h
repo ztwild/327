@@ -1,5 +1,6 @@
 #include "character.cpp"
 #include "pc.cpp"
+#include "queue.cpp"
 
 #define VIEW_X              80
 #define VIEW_Y              21
@@ -34,14 +35,17 @@ typedef enum obj_type{
 class environment{
   public:
     pc *PC;
+    queue *q;
     envr_type environment_map[ENVIRONMENT_Y][ENVIRONMENT_X];
     obj_type object_map[ENVIRONMENT_Y][ENVIRONMENT_Y];
     character *character_map[ENVIRONMENT_Y][ENVIRONMENT_X];
     environment(){
       PC = new pc();
+      q = new queue();
     }
     ~environment(){
       delete PC;
+      delete q;
     }
     void gen_environment();
     void place_pc();

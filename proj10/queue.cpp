@@ -1,58 +1,50 @@
 #include "queue.h"
 
-node_t *create_node(void *v){
-  node_t *n = (node_t*)malloc(sizeof(node_t));
-  if(!n){
-    fprintf(stderr, "create_node: Cannot allocate mem for node\n");
-    return NULL;
-  }
-  n->value = v;
-  n->next = NULL;
-  return n;
-}
 
-queue_t *init_queue(){
-  queue_t *q = (queue_t*)malloc(sizeof(queue_t));
-  if(!q){
-    fprintf(stderr, "init_queue: Cannot allocate mem for queue\n");
-    return NULL;
-  }
-  q->size = 0;
-  q->first = NULL;
-  return q;
-}
-
-void enqueue(queue_t *q, void *value){
-  node_t *n = create_node(value);
+void queue::enqueue(void *value){
+  node *n = new node(value);
   
-  if(!q->first){
-    q->first = n;
+  if(!first){
+    first = n;
   }else{
-    node_t *temp = q->first;
+    node *temp = first;
     while(temp->next){
       temp = temp->next;
     }
     temp->next = n;
   }
-  q->size++;
+  size++;
 }
 
-void enqueue_sort(queue_t *q, void *v, 
-                      int(*comp)(const void *, const void *))
-{
-  node_t *n = create_node(v);
-  
-  if(!q->first){
-    q->first = n;
+void *queue::dequeue(){
+  void *value = NULL;
+  if(size){
+    size--;
+    node *n = first;
+    first = n->next;
+    n->next = NULL;
+    value = n->value;
+    n->value = NULL;
+    delete n;
   }
-  else if(comp(v, q->first->value)){
-    n->next = q->first;
-    q->first = n;
+  return value;
+}
+
+/**
+void queue::enqueue_sort(void *v, int(*comp)(const void *, const void *)){
+  node *n = new node(v);
+  
+  if(!first){
+    first = n;
+  }
+  else if(comp(v, first->value)){
+    n->next = first;
+    first = n;
   }
   else{
     int inserted = 0;
-    node_t *prev = q->first;
-    node_t *cur = prev->next;
+    node *prev = first;
+    node *cur = prev->next;
     while(!inserted){
       if(!cur){
         prev->next = n;
@@ -65,23 +57,12 @@ void enqueue_sort(queue_t *q, void *v,
       }
       else{
         prev = cur;
-        cur = cur->next;
+        cur = next;
       }
     }
   }
-  q->size++;
+  size++;
 }
+**/
 
-void *dequeue(queue_t *q){
-  void *value = NULL;
-  if(q->size){
-    q->size--;
-    node_t *n = q->first;
-    q->first = n->next;
-    n->next = NULL;
-    value = n->value;
-    n->value = NULL;
-    free(n);
-  }
-  return value;
-}
+
