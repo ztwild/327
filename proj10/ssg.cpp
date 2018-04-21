@@ -9,37 +9,36 @@
 
 
 void test(){
+  queue q; 
   int a = 1;
   int b = 2;
   int c = 3;
   int d = 4;
   int e = 5;
 
-  environment *env = new environment();
-  env->q->enqueue((void*)&a);
-  env->q->enqueue((void*)&b);
-  env->q->enqueue((void*)&c);
-  env->q->enqueue((void*)&d);
-  env->q->enqueue((void*)&e);
+  q.enqueue((void*)&a);
+  q.enqueue((void*)&b);
+  q.enqueue((void*)&c);
+  q.enqueue((void*)&d);
+  q.enqueue((void*)&e);
   
-  int f = *(int*)env->q->dequeue();
+  int f = *(int*)q.dequeue();
   cout << "should be 1: " << f << endl;
-  int g = *(int*)env->q->dequeue();
+  int g = *(int*)q.dequeue();
   cout << "should be 2: " << g << endl;
   
-  env->q->enqueue((void*)&f);
-  env->q->enqueue((void*)&g);
+  q.enqueue((void*)&f);
+  q.enqueue((void*)&g);
   
-  int h = *(int*)env->q->dequeue();
+  int h = *(int*)q.dequeue();
   cout << "should be 3: " << h << endl;
-  int i = *(int*)env->q->dequeue();
+  int i = *(int*)q.dequeue();
   cout << "should be 4: " << i << endl;
-  int j = *(int*)env->q->dequeue();
+  int j = *(int*)q.dequeue();
   cout << "should be 5: " << j << endl;
-  int k = *(int*)env->q->dequeue();
+  int k = *(int*)q.dequeue();
   cout << "should be 1: " << k << endl;
   
-  delete env;
 }
 
 

@@ -1,7 +1,15 @@
 
 #include "environment.cpp"
+#include <string.h>
 
 environment *e;
+
+void print_message(const char *mess){
+  clear();
+  int y = (VIEW_Y + 2) / 2;
+  int x = VIEW_X / 2 - strlen(mess) / 2;
+  mvprintw(y, x, "%s", mess);
+}
 
 void io_init_terminal(){
   initscr();
@@ -25,22 +33,11 @@ void init_game(){
   io_init_terminal();
 }
 
-void update_game(){
-  character *c = (character*)e->q->dequeue();
-  while(c != e->PC){
-    
-    e->q->enqueue((void*)c);
-  }
-  if(c == e->PC){
-    if(e->PC->jump > 0){
-      
-    }
-  }
-}
+
 
 void start_game(){
   int key, fail_code = 1;
-  
+
   do{
     print_screen(e);
     
@@ -61,11 +58,22 @@ void start_game(){
     
     
     gravity_update(e);
+    if(!e->PC->alive) fail_code = 0;
   }
   while(fail_code);
   
+  
+  if(!e->PC->alive){
+    print_message("GAME OVER!");
+  }
+  else{
+    print_message("YOU WIN!");
+  }
+  getch();
+  
   endwin();
   delete e;
+  
   cout << "\tend game" << endl;
 }
 
