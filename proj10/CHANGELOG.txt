@@ -1,0 +1,16 @@
+assignment 2:
+04/20/18: started side scroller game
+04/20/18: Builds environment and pc moves
+04/20/18: Abile to walk on clouds, boxes, ladders
+04/21/18: Jumping mechanic works, as well as gravity
+04/21/18: picks up objects
+04/21/18: randomly generates pits, their size, boxes, clouds, nd ladders
+04/21/18: pc respawns
+04/22/18: redraws new level after end of level si reached
+04/22/18: generates npcs
+04/22/18: npcs move
+04/22/18: npcs attack
+04/22/18: pc updates stats from picking up objects
+
+
+
